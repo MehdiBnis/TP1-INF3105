@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr-CA">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>INF3105 - TP1</title>
+<meta charset="UTF-8">
+
+    <style>
+
+    header{
+        background-color: #0d57a1;
+        padding: 8px;
+        color: white;
+        font-size: 110%;
+    }
+    footer{
+        padding: 3px;
+        margin-top: 1em;
+        color: white;
+        background-color: #0d57a1;
+    }
+    body{
+        margin: 0;
+    }
+    div.contenu{
+        padding: 3px;
+        margin: 3px;
+    }
+    h1{
+        text-align: center;
+        border-bottom: solid 1px;
+        font-variant: small-caps;
+    /*    color: #0d57a1;*/
+    }
+    h2{
+        text-align: left;
+        border-top: dotted 2px gray;
+        font-variant: small-caps;
+    }
+
+    table{
+        border-collapse: collapse;
+        border: 1px solid #000;
+        vertical-align: top;
+    /*    width: 100%;*/
+    }
+    td{
+        border: 1px solid #000;
+        padding: 2px;
+        vertical-align: top;
+        text-align: left;
+    }
+    th{
+        border: 1px solid #666;
+        padding: 2px;
+        text-align: left;
+        vertical-align: top;
+        background-color: lightgray;
+    }
+    table.calendrier th:nth-child(3){
+        width: 60%;
+    }
+    table.calendrier th:nth-child(4){
+        width: 20%;
+    }
+
+    tr.semaine_impaire{
+        background-color: #efe;
+        background-color: #fff;
+    }
+    tr.semaine_paire{
+        background-color: #eee;
+    }
+
+    table.calendrier td.courante {
+        background-color: #0d57a1;
+        color: white;
+    }
+
+
+    div.equipe{
+        border: solid 0px;
+        border-color: gray;
+        margin-left:auto;
+        margin:0 auto;
+        vertical-align: top;
+    }
+    div.equipe > div.groupe{
+        //border: solid 1px #999;
+        background-color: #eee;
+        //border-radius: 0.5em;
+        border-left: solid 6px #0d57a1;
+        border: solid 1 2 3 4 #0d57a1;
+        padding: 5px;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 2em;
+        display: inline-block;
+        vertical-align: top;"
+    }
+    div.equipe > div.groupe>h3{
+        border-bottom: dashed 1px gray;
+    }
+
+
+    .nouveau{
+        background-color: rgb(153,255, 153);
+    }
+
+    @media print
+    {
+        .noPrint
+        {
+            display:none;
+        }
+    }
+
+    ul{
+        margin-top: 0px;
+        padding-left: 2em;
+
+    }
+
+    table.donnees  tr  td:nth-child(n+2) {
+        text-align: right;
+    }
+
+    div #accesrapide {
+       text-align: right;
+       right: 0px;
+    }
+
+    div #accesrapide p {
+       background-color: #eee;
+       padding: 5px;
+       display: inline;
+    }
+
+    div #accesrapide p a {
+       background-color: LightBlue;
+       border: solid 1px blue;
+       padding: 2px;
+       display: inline;
+    }
+
+    div #accesrapide p a.courante {
+       background-color: #0d57a1;
+       border: solid 1px blue;
+       color: white;
+       padding: 2px;
+       display: inline;
+    }
+
+
+    header > div{
+        margin: 0;
+        padding: 0;
+        display: inline-block;
+    }
+
+    pre{
+        padding: 5px;
+        background-color: #d7eef4;
+        color: black;
+        line-height: 110%;
+        border: 1px solid #0d57a1;
+        border-left: 6px solid #0d57a1;
+    }
+
+    h1{
+        border: 0;
+    }
+
+
+    h1:not(.autres) {
+        counter-reset: H2;
+    }
+
+
+    h2{
+        counter-reset: H3;
+    }
+
+    h3{
+        counter-reset: H4;
+    }
+
+    h2:before {
+        content: counter(H2) ". ";
+        counter-increment: H2;
+    }
+
+    h3:before {
+      content: counter(H2) "." counter(H3) " ";
+      counter-increment: H3;
+    }
+
+    h4:before {
+      content: counter(H2) "." counter(H3) "." counter(H4) " ";
+      counter-increment: H4;
+    }
+
+    code{
+        background-color: #d7eef4;
+    }
+
+    table.grilleevaluation  tr  td:nth-child(3) {
+        text-align: center;
+    }
+
+    table.grilleevaluation  tr  th:nth-child(3) {
+        text-align: center;
+    }
+
+
+    </style>
+</head>
+
+<body>
+
+<header>
+<div>
+<b>INF3105 — Structures de données et algorithmes</b>
+<br>
+Automne 2024
+</div>
+<div style="text-align: right; position: absolute; right: 1em">
+UQAM
+<br>
+Département d'informatique
+</div>
+</header>
+
+<div class="contenu">
+
+
+<h1 align="center">TP1 - Mission lunaire</h1>
+
+
+<h2>Objectifs</h2>
+<ul>
+ <li>S'initier à la programmation en C++.</li>
+ <li>Pratiquer l'encapsulation et concevoir des types abstraits de données.</li>
+ <li>Gérer la mémoire.</li>
+ <li>Implémenter et appliquer des structures de données simples en C++.</li>
+ <li>Résoudre un problème simple.</li>
+ <li>Analyser la complexité temporelle d'un algorithme.</li>
+</ul>
+
+<h2>Problématique</h2>
+<p>
+  Une mission d'exploration lunaire est étudiée dans ce projet.
+  Un robot doit se poser sur la lune afin d'effectuer un certain nombre de missions. Chaque mission (à effectuer dans l'ordre) peut être réalisée à différents endroits.
+  Le but est de choisir pour chaque mission l'endroit où la réaliser afin de minimiser la distance que le robot doit parcourir.
+  Vous devrez écrire un programme tp1 qui prend en entrée les différentes missions à effectuer (avec les différents lieux où les missions peuvent être effectuées), ainsi que les différents points d'atterrissage. Le programme devra retourner pour chaque point d'atterrissage les emplacements où effectuer chacune des missions.
+</p>
+
+
+<h2>Structure du programme</h2>
+<p>
+Un squelette de départ est disponible dans <a href="tp1.zip">tp1.zip</a>.
+</p>
+<ul>
+  <li>Ce squelette vous est fourni pour vous aider à vous concentrer sur l'essentiel du TP1.</li>
+  <li>Vous êtes libres de l'utiliser ou non.</li>
+  <li>Vous pouvez y effectuer toutes les modifications que vous souhaitez ou jugez nécessaires.</li>
+  <li>Ce squelette vise d'abord la simplicité pour obtenir rapidement un programme fonctionnel.</li>
+</ul>
+
+<h3>Syntaxe d'appel du programme tp1</h3>
+<p>
+Votre programme doit pouvoir être lancé en ligne de commande avec la syntaxe suivante :
+</p>
+<blockquote>
+<pre>./tp1 carte.txt [departs.txt]</pre>
+</blockquote>
+<p>
+où <tt>carte.txt</tt> est le nom du fichier contenant les données de la carte à utiliser,
+et <tt>departs.txt</tt> (optionnel) est le nom d'un fichier contenant les points de départ possibles.
+</p>
+<p>
+Si <tt>departs.txt</tt> est spécifié, alors votre programme doit lire dans <tt>departs.txt</tt> au moyen d'un flux de lecture C++ <tt>std::ifstream</tt>.
+Sinon, votre programme doit lire dans l'entrée standard (<i>stdin</i>) au moyen du flux d'entrée C++ <tt>std::cin</tt>.
+À noter que le squelette implémente déjà cela.
+</p>
+
+<h3>Format d'un fichier de carte</h3>
+<p>
+Un fichier de carte contient la liste des emplacements possibles pour chaque projet à réaliser.
+Le fichier commence par un nombre indiquant le nombre de missions puis sur chaque ligne, la description de ces missions en commençant par le nom de la mission, le nombre de sites possibles pour effectuer la mission et la position de chacun de ces sites.
+</p>
+
+<p>
+Par exemple, le fichier <tt><a href="carte3.txt">carte3.txt</a></tt> ci-bas.
+<pre>
+3
+A 3 (0,0) (10,0) (5,10)
+B 3 (0,10) (15,0) (20,10)
+C 3 (5,5) (15,5) (20,5)
+</pre>
+
+<p>
+Cet exemple correspond visuellement à la carte suivante.
+</p>
+<img src="carte.svg" border="1">
+
+<h3>Format d'un fichier de requêtes</h3>
+<p>
+Votre programme <tt>tp1</tt> doit calculer pour chaque point d'atterrissage spécifié par departs.txt (ou dans std::cin si departs.txt n'est pas spécifié) le chemin le plus court pour effectuer toutes les missions dans l'ordre (A, puis B, puis C, etc...).
+Les points de départ sont tout simplement des coordonnées.
+</p>
+<p>
+Par exemple, le fichier <tt><a href="departs3.txt">departs3.txt</a></tt> ci-bas.
+<pre>
+(1,3)
+(6,1)
+(3,9)
+(20,2)
+</pre>
+</p>
+
+<h3>Format de sortie</h3>
+<p>
+Pour chaque point de départ, votre programme doit écrire sur la sortie standard std::cout les numéros de mission pour minimiser la distance à parcourir.
+</p>
+<p>Le résultat de la commande <tt>./tp1 carte3.txt departs3.txt</tt> produit le résultat suivant.</p>
+<pre>
+2 2 2
+2 2 2
+3 1 1
+2 2 2
+</pre>
+<img src="carteSol.svg" border="1">
+
+<h3>Algorithme naif pour n = 3</h3>
+<p>
+Pour chaque point de départ, on peut calculer la distance pour chaque triplet a<sub>i</sub>, b<sub>j</sub>, c<sub>k</sub> où a<sub>i</sub> représente la i eme mission A, B<sub>j</sub> la j eme mission B et C<sub>k</sub> la k eme mission C.
+</p>
+<p>Algorithme naif :</p>
+<pre>
+TopOrder(Mission A = { a<sub>1</sub>, a<sub>2</sub>, ..., a<sub>m<sub>a</sub></sub> }, Mission B = { b<sub>1</sub>, b<sub>2</sub>, ..., b<sub>m<sub>b</sub></sub> }, Mission C = { c<sub>1</sub>, c<sub>2</sub>, ..., c<sub>m<sub>c</sub></sub> }, Point depart):
+    mindist ← +∞
+    result ← {0, 0, 0}
+    pour toutes les missions a<sub>i</sub> dans A
+      pour toutes les missions b<sub>j</sub> dans B
+        pour toutes les missions c<sub>k</sub> dans C
+          si distance(depart, a<sub>i</sub>) + distance(a<sub>i</sub>, b<sub>j</sub>) + distance(b<sub>j</sub>, c<sub>k</sub>) < mindist
+              mindist ← distance(depart, a<sub>i</sub>) + distance(a<sub>i</sub>, b<sub>j</sub>) + distance(b<sub>j</sub>, c<sub>k</sub>)
+              result ← {i, j, k}
+    retourner result
+</pre>
+
+
+<h3>Amelioration 1</h3>
+<p>
+  Nous pouvons remarquer que la distance minimal pour effectuer toutes les missions correspond a trouver une mission a<sub>i</sub> qui minimise l'équation :
+  <pre>
+  distance(depart, a<sub>i</sub>) + topOder({ b<sub>1</sub>, b<sub>2</sub>, ..., b<sub>m<sub>b</sub></sub> }, { c<sub>1</sub>, c<sub>2</sub>, ..., c<sub>m<sub>c</sub></sub> }, a<sub>i</sub>)
+</pre>
+La seconde partie de l'équation ne dépendant pas du point de départ, nous pouvons précalculer cette valeur afin de ne pas avoir a la recalculer pour chaque nouveau point de départ.
+</p>
+
+
+<h2>Contraintes</h2>
+<h3>Bibliothèques permises</h3>
+<p>
+Vous devez implémenter et utiliser votre propre classe générique <tt>Tableau</tt> selon le squelette dans <tt>tableau.h</tt> du laboratoire 3.
+Pour l'instant, l'utilisation des conteneurs de la bibliothèque standard de C++ (ex.: <tt>std::vector</tt> ou <tt>std::list</tt>) n'est pas permise.
+Ce sera permis plus tard dans le cours.
+</p>
+
+<h3>Environnement de développement</h3>
+<p>
+Votre TP1 doit pouvoir être compilé avec g++ version 12 (version installée sur le serveur <tt>java.labunix.uqam.ca</tt>).
+</p>
+
+<h3>Taille des équipes</h3>
+<p>
+Vous pouvez faire ce travail en équipe de 1 ou 2.
+Toutefois, tous les membres de l'équipe doivent contribuer à l'ensemble du travail et non à seulement quelques parties.
+Le travail d'équipe vise à favoriser les discussions et l'entraide.
+Le travail d'équipe ne vise pas à réduire la tâche.
+Ainsi, se diviser la tâche en deux n'est pas une méthode de travail d'équipe appropriée dans ce cours.
+La participation inadéquate des membres de l'équipe peut être considérée comme du plagiat.
+Le professeur et le correcteur pourront sélectionner quelques équipes au hasard afin de vérifier que tous les membres sont capables d'expliquer l'ensemble du travail.
+</p>
+
+
+<h2>Tests</h2>
+Pour vous aider à vérifier que votre programme fonctionne correctement, un outil de vérification est fourni <a href="verif.zip">ICI</a>.
+<br>
+Bien que vous puissiez créer vos propres fichiers de carte, voici un script pour les créer automatiquement : <a href="mapGenerator.zip">ICI</a>.
+
+<h2>Remise</h2>
+<p>
+Vous devez remettre votre travail <b>au plus tard le 20 octobre 2021 à 23h59m59s</b>.
+</p>
+<p>Fichiers à remettre:</h3>
+<ol>
+<li>
+<b>tp1-src.zip</b> : fichier ZIP contenant tous vos fichiers sources (<tt>*.{h,cpp}</tt>), votre fichier <tt>Makefile</tt> et <b>rapport.pdf</b>.
+</li>
+<li>
+Votre fichier <b>rapport.pdf</b> contenu dans le zip contient :
+<ol type="i">
+
+<li><b>Analyse de la complexité temporelle (pire cas) en notation grand O</b> de l'algorithme naif avec et sans l'optimisation 1.<br>
+  Les complexités temporelles devraient être exprimées en fonction d'une ou plusieurs variables dont :
+  <ul>
+   <li><i>n</i> = nombre de missions ;</li>
+   <li><i>m</i> = nombre de sites pour chaque mission (nous considérerons que toutes les missions ont le même nombre de sites) ;</li>
+   <li><i>d</i> = nombre de positions de départ.</li>
+  </ul>
+  </li>
+</ol>
+</ol>
+
+
+<h2>Évaluation</h2>
+<p>
+Ce travail pratique vaut 15% de la note finale.
+</p>
+
+
+<h3>Grille de correction</h3>
+
+<table class="grilleevaluation" cellpadding="2" cellspacing="1" border="1">
+ <tbody>
+ <tr>
+  <th><b>Critère</b></th>
+  <th><b>Description</b></th>
+  <th><b>Points</b></th>
+ </tr>
+ <tr valign="top">
+  <td>A.</td>
+  <td><b>Respect des directives pour la remise</b>
+   <ul>
+      <li>Fichiers sources seulement (ex.: .h, .cpp, Makefile) et le rapport au format pdf.
+          Aucun fichier source manquant (les fichiers fournis doivent être soumis, même si non modifiés).
+          Aucun fichier binaire (ex.: .o, .obj, .gch, exécutable, etc.).
+          Aucun fichier test.</li>
+      <li>Compilable avec <tt>make</tt> sans modifications.</li>
+      <li>Exécutable sans modifications.</li>
+    </ul>
+  </td>
+  <td>/ 2.0</td>
+ </tr>
+ <tr valign="top">
+  <td>B.</td>
+  <td><b>Appréciation générale</b>
+   <ul>
+      <li>Structure du programme + Qualité du code :</li>
+      <ul>
+        <li>Découpage du programme (tout n'est pas dans la fonction <tt>main()</tt>).</li>
+        <li>Choix des types de données; identificateurs (noms) significatifs, lisibilité du code, pertinence des commentaires; etc.</li>
+        <li>Justesse de l'usage du mot clé <tt>const</tt>, des références (&amp;) et des pointeurs (*).</li>
+      </ul>
+      <li>Encapsulation : <br>
+      </li>
+      <ul>
+        <li>Respect des principes de l'abstraction;
+        </li><li>Cachez le maximum de la représentation des objets en rendant un maximum d'attributs privés;</li>
+        <li>Évitez autant que possible les bris d'abstraction, comme des <i>getters</i>
+          et <i>setters</i> qui retournent ou affectent directement des attributs d'un type abstrait de donnée.
+          Par exemple, les fonctions <tt>getX()</tt> et <tt>getY()</tt> ne devraient pas exister dans une classe <tt>Point</tt>.
+          Mais, une fonction <tt>getNom()</tt>dans une classe <tt>Region</tt> peut être justifiée/tolérée.
+        </li>
+        <li>Utilisation appropriée des modificateurs d'accès <tt>public</tt>, <tt>protected</tt> et <tt>private</tt>,
+          et du mot clé <tt>friend</tt>, etc.</li>
+      </ul>
+      <li>Gestion de la mémoire : <br>
+      </li>
+      <ul>
+        <li>Toute la mémoire allouée dynamiquement doit être correctement libérée au moment approprié et avant la fin du programme.</li>
+      </ul>
+    </ul>
+  </td>
+  <td>/ 3.0</td>
+ </tr>
+
+ <tr valign="top">
+  <td>C.</td>
+  <br>
+  <td><b>Fonctionnement correct</b><br>
+    Le programme retourne les bonnes réponses pour :
+      <ul>
+        <li>C1 : nombre de missions = 1 (2 points)</li>
+        <li>C2 : nombre de missions = 2 (2 points)</li>
+        <li>C3 : nombre de missions = 3 (2 points)</li>
+      </ul>
+  Le programme doit parvient à produire des résultats dans des délais raisonnables et consommer une quantité de mémoire raisonnable.
+  <br>
+  </td>
+  <td>/ 6.0</td>
+ </tr>
+
+
+ <tr valign="top">
+  <td>D.</td>
+  <td><b>Complexité</b><br>
+      <ul>
+        <li>La complexité de l'algorithme implémenté est au moins aussi bonne que celle de l'algorithme naïf avec l'amélioration 1.</li>
+      </ul>
+  </td>
+  <td>/ 3.0</td>
+ </tr>
+
+
+
+ <tr valign="top">
+  <td>E.</td>
+  <td><b>Rapport / Analyse des algorithmes</b>
+   <ul>
+      <li>Complexité temporelle en notation grand O.</li>
+      <li>Ordre de grandeur simplifié. Ex: O(2n) ==&gt; O(n).</li>
+      <li>Justification claire et correcte.</li>
+    </ul>
+  </td>
+  <td>/ 2.0</td>
+ </tr>
+
+
+ <tr bgcolor="#eeeeee" valign="top">
+  <th><p></p></th>
+  <th style="text-align: right">Total</th>
+  <th>16</th>
+ </tr>
+
+
+
+ <tr valign="top">
+  <td>F.</td>
+  <td><b>Votre programme fonctionne avec un nombre quelconque de missions. (boni).</b>
+  <p>
+    Avertissements : Implémenter cette capacité peut demander beaucoup de temps pour seulement 2 points bonis.
+  </p>
+  </td>
+  <td align="center">/ 2.0</td>
+ </tr>
+
+ <tr valign="top">
+  <td>G.</td>
+  <td><b>La complexité de votre programme est bien meilleure que la solution triviale + amélioration 1. (boni).</b>
+  <p>
+    Avertissements : Implémenter cette capacité peut demander beaucoup de temps pour seulement 2 points bonis.
+  </p>
+  </td>
+  <td align="center">/ 2.0</td>
+ </tr>
+
+
+ <tr bgcolor="#eeeeee" valign="top">
+  <th><p></p></th>
+  <th style="text-align: right">Note maximale : </th>
+  <th>20/16</th>
+ </tr>
+
+
+</tbody></table>
+
+<h3>Pénalités</h3>
+<ul>
+<li>Pour les cas problématiques,
+jusqu'à 2 points peuvent être retranchés pour la qualité de la langue et de la présentation.
+</li>
+<li>
+Une pénalité de 5 points s'applique si vous utilisez un conteneur de la bibliothèque standard de C++ plutôt que d'utiliser votre propre structure de données Tableau (<tt>tableau.h</tt>).
+</li>
+<li>
+Retard: 5% de la note maximale par heure de retard.
+</li>
+
+</ul>
+
+
+
+</body>
+</html>
